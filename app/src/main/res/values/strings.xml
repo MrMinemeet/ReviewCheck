@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ReviewCheck</string>
+    <string name="url">Amazon-URL</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="search_history">Request History</string>
+    <string name="no_URL_Entered">No URL entered</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="not_a_url">Not a URL!</string>
+    <string name="url_auto_entered">URL has automatically been filled in</string>
+    <string name="no_ASIN_found">No ASIN found in URL</string>
+</resources>
