@@ -19,6 +19,7 @@
         android:hint="@string/url"
         android:importantForAutofill="no"
         android:inputType="textUri"
+        android:typeface="normal"
         app:layout_constraintEnd_toStartOf="@+id/btn_ok"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
