@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadSettings();
 
-        //SetztDisplayaufPortraitmodus(Hochkant)
+        // Setting display mode to portrait
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         txb_url = findViewById(R.id.txb_url);
 
@@ -99,15 +99,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void CheckItem(View v){
         try {
-            // Text aus EditText Box holen
+            // Grab text from textbox
             String textboxText = txb_url.getText().toString();
 
-            // Überprüfen ob etwas drinne stand.
+            // Check if something is in it
             if (textboxText.length() > 0) {
                 String[] splittedText = textboxText.split(" ");
                 url = splittedText[splittedText.length - 1];
 
-                // Überprüfen ob eingegebener String eine URL ist
+                // Check if string from box is a URL
                 if(URLUtil.isValidUrl(MainActivity.url)) {
                     // Filter ASIN from URL with RegEx
                     Pattern pattern = Pattern.compile(".*/([a-zA-Z0-9]{10})(?:[/?]|$).*");
@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         saveSettings();
     }
 
-
     // Save/Load
     public void saveSettings(){
         SharedPreferences preferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
@@ -156,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadSettings(){
-        SharedPreferences prfs = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = prfs.getString("historyList", "");
+        String json = sharedPreferences.getString("historyList", "");
         if(!json.equals("")) {
             Type type = new TypeToken<List<itemResult>>() {
             }.getType();

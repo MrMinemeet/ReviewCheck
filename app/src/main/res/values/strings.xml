@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ReviewCheck</string>
     <string name="url">Amazon-URL</string>
-    <string name="ok" translatable="false">OK</string>
+    <string name="ok">OK</string>
     <string name="search_history">Request History</string>
     <string name="no_URL_Entered">No URL entered</string>
     <string name="no_internet_connection">No internet connection</string>

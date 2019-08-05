@@ -7,4 +7,5 @@
     <string name="not_a_url">Kein Link!</string>
     <string name="url_auto_entered">Link wurde automatisch ausgefüllt</string>
     <string name="no_ASIN_found">Keine ASIN in dem Link gefunden</string>
+    <string name="ok">OK</string>
 </resources>
