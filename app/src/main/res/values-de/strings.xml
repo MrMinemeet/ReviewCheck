@@ -9,4 +9,5 @@
     <string name="cnd_SearchHistory">Suchverlauf</string>
     <string name="clear_history">Verlauf löschen</string>
     <string name="history_cleared">Verlauf wurde gelöscht</string>
+    <string name="ok">OK</string>
 </resources>
