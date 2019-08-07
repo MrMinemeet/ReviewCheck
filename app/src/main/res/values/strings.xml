@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ReviewCheck</string>
+    <string name="app_name" translatable="false">ReviewCheck</string>
     <string name="url">Amazon-URL</string>
     <string name="ok">OK</string>
     <string name="search_history">Request History</string>
@@ -8,4 +8,7 @@
     <string name="not_a_url">Not a URL!</string>
     <string name="url_auto_entered">URL has automatically been filled in</string>
     <string name="no_ASIN_found">No ASIN found in URL</string>
+    <string name="cnd_SearchHistory">search history</string>
+    <string name="clear_history">Clear History</string>
+    <string name="history_cleared">History was cleared</string>
 </resources>

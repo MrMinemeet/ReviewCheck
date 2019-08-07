@@ -13,8 +13,11 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -53,13 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.url_auto_entered, Toast.LENGTH_SHORT).show();
             }
         }
-        /*
-        ImageView imageView = findViewById(R.id.my_image_view);
-        Glide.with(getApplicationContext())
-                .load("https://images-na.ssl-images-amazon.com/images/I/41BLUS6FI4L._AC_SY200_.jpg")
-                .override(300,300)
-                .into(imageView);
-        */
     }
 
     @Override
@@ -71,16 +67,19 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.removeAllViews();
 
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
+                LinearLayout verticalLayout = new LinearLayout(this);
+                verticalLayout.setOrientation(LinearLayout.VERTICAL);
+
                 Button button = new Button(this);
                 button.setBackgroundColor(Color.TRANSPARENT);
                 button.setId(i);
                 // Set Text
                 itemResult result = searchHistory.get(i);
 
-                String name = result.name;
-                if(result.name.length() > 30)
-                    name = result.name.substring(0,30) + "...";
-                String text = name + "\n" + "Rating: " + result.getRating() + "\tAmazon Typ: " + result.amazonType;
+                String name = result.getName();
+                if(result.getName().length() > 30)
+                    name = result.getName().substring(0,30) + "...";
+                String text = name + "\n" + "Rating: " + result.getRating() + "\tAmazon Typ: " + result .getAmazonType();
                 button.setText(text);
 
                 // OnClickListener
@@ -92,7 +91,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                linearLayout.addView(button);
+                ImageView imageView = new ImageView(this);
+                Glide.with(getApplicationContext())
+                        .load(result.getPictureURL())
+                        .override(300,300)
+                        .into(imageView);
+
+                verticalLayout.addView(imageView);
+                verticalLayout.addView(button);
+                linearLayout.addView(verticalLayout);
             }
         }
     }
@@ -159,9 +166,15 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("historyList", "");
         if(!json.equals("")) {
-            Type type = new TypeToken<List<itemResult>>() {
-            }.getType();
+            Type type = new TypeToken<List<itemResult>>() {}.getType();
             MainActivity.searchHistory = gson.fromJson(json, type);
         }
+    }
+
+    public void clearHistory(View v){
+        searchHistory.clear();
+        LinearLayout horizontalLayout = findViewById(R.id.lst_searchHistory);
+        horizontalLayout.removeAllViews();
+        Toast.makeText(getApplicationContext(), R.string.history_cleared, Toast.LENGTH_SHORT).show();
     }
 }

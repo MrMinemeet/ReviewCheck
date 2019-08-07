@@ -103,8 +103,9 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
 
         HttpURLConnection huc = null;
         BufferedReader br = null;
-        itemResult itemresult = null;
+        itemResult itemresult = new itemResult();
 
+        // Get Information from ReviewMeta API
         try{
             URL url = new URL(link);
             huc = (HttpURLConnection)url.openConnection();
@@ -113,24 +114,12 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
             // Check if Response code is HTTP OK
             if(responseCode == HttpURLConnection.HTTP_OK){
                 br = new BufferedReader(new InputStreamReader(huc.getInputStream()));
-
                 String response = br.readLine();
                 JSONObject result = new JSONObject(response);
-
-                double rating;
-                String refLink;
-                Byte overall;
-                String name;
                 // Get ReviewMeta API information
-                rating = Double.parseDouble(result.getString("rating"));
-                refLink = result.getString("href");
-                overall = Byte.parseByte(result.getString("s_overall"));
-
-                // Get Product Name
-                Document document = Jsoup.connect(MainActivity.url).followRedirects(false).timeout(10000).get();
-                name = document.body().select("#productTitle").get(0).text();
-
-                itemresult = new itemResult(name,rating,overall,refLink, requested.ASIN, requested.amazonType);
+                itemresult.setRating(Double.parseDouble(result.getString("rating")));
+                itemresult.setLink(result.getString("href"));
+                itemresult.setOverall(Byte.parseByte(result.getString("s_overall")));
             }
         }catch (Exception e){
             Log.e("ReviewCheck", Objects.requireNonNull(e.getMessage()));
@@ -147,6 +136,17 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
                 huc.disconnect();
             }
         }
+
+        // Get information from Amazon page
+        try{
+            // Get Product Name
+            Document document = Jsoup.connect(MainActivity.url).get();
+            itemresult.setName(document.body().select("#title").get(0).text());
+        } catch (Exception e){
+            Log.e("ReviewMeta", Objects.requireNonNull(e.getMessage()));
+        }
+
+
         return itemresult;
     }
 

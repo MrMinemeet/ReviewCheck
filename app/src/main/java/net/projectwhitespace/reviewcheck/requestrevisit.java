@@ -24,7 +24,7 @@ public class requestrevisit extends AppCompatActivity {
         setUpWebView();
 
         String baseURL = "https://reviewmeta.com/";
-        webview.loadUrl(baseURL + '/' + result.amazonType + '/' + result.ASIN);
+        webview.loadUrl(baseURL + '/' + result.getAmazonType() + '/' + result.getASIN());
     }
 
     public void setUpWebView(){

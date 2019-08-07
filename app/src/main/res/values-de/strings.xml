@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">ReviewCheck</string>
     <string name="url">Amazon-Link</string>
-    <string name="ok">OK</string>
     <string name="search_history">Abfrageverlauf</string>
     <string name="no_URL_Entered">Kein Link vorhanden</string>
     <string name="no_internet_connection">Keine Internetverbindung</string>
     <string name="not_a_url">Kein Link!</string>
     <string name="url_auto_entered">Link wurde automatisch ausgefüllt</string>
     <string name="no_ASIN_found">Keine ASIN in dem Link gefunden</string>
+    <string name="cnd_SearchHistory">Suchverlauf</string>
+    <string name="clear_history">Suchverlauf löschen</string>
     <string name="ok">OK</string>
+    <string name="history_cleared">Suchverlauf gelöscht</string>
 </resources>
