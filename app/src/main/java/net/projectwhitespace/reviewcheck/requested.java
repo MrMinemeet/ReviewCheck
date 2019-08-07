@@ -9,11 +9,9 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -145,8 +143,6 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
         } catch (Exception e){
             Log.e("ReviewMeta", Objects.requireNonNull(e.getMessage()));
         }
-
-
         return itemresult;
     }
 
