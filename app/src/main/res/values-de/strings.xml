@@ -7,7 +7,6 @@
     <string name="url_auto_entered">Link wurde automatisch ausgefüllt</string>
     <string name="no_ASIN_found">Keine ASIN in dem Link gefunden</string>
     <string name="cnd_SearchHistory">Suchverlauf</string>
-    <string name="clear_history">Suchverlauf löschen</string>
-    <string name="ok">OK</string>
-    <string name="history_cleared">Suchverlauf gelöscht</string>
+    <string name="clear_history">Verlauf löschen</string>
+    <string name="history_cleared">Verlauf wurde gelöscht</string>
 </resources>
