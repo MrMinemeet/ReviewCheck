@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 public class requested extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class requested extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requested);
 
-        // Standardeinstellungen bei WebView treffen
+        // Setting default things for webview
         setUpWebView();
 
         String baseURL = "https://reviewmeta.com/";
@@ -76,23 +77,23 @@ public class requested extends AppCompatActivity {
                 return "amazon-nl";
         }
         catch(URISyntaxException e){
-            Log.d("Bamboozle", e.getMessage());
+            Log.d("Bamboozle", Objects.requireNonNull(e.getMessage()));
         }
         return "";
     }
 
     public void setUpWebView(){
-        webview = (WebView)findViewById(R.id.browser);
-        // Enable Javascript
+        webview = findViewById(R.id.browser);
         WebSettings webSettings = webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        // Enable Javascript
+        webSettings.setJavaScriptEnabled(false);
 
         webview.setWebViewClient(new WebViewClient());
         CookieManager.getInstance().setAcceptCookie(true);
     }
 }
 
-// Function for requesting the data from API asyncronysly
+// Function for requesting the data from API asynchronously
 // AsyncTask<Parameters, Progress Value Type, Return Value Type>
 class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
 
@@ -102,50 +103,50 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
 
         HttpURLConnection huc = null;
         BufferedReader br = null;
-        itemResult itemresult = null;
+        itemResult itemresult = new itemResult();
 
+        // Get Information from ReviewMeta API
         try{
             URL url = new URL(link);
             huc = (HttpURLConnection)url.openConnection();
 
             int responseCode = huc.getResponseCode();
-            // Überrprüfen ob Status OK ist
+            // Check if Response code is HTTP OK
             if(responseCode == HttpURLConnection.HTTP_OK){
                 br = new BufferedReader(new InputStreamReader(huc.getInputStream()));
-
                 String response = br.readLine();
                 JSONObject result = new JSONObject(response);
-
-                double rating = -1;
-                String refLink = null;
-                Byte overall = 0;
-                String name = "";
                 // Get ReviewMeta API information
-                rating = Double.parseDouble(result.getString("rating"));
-                refLink = result.getString("href");
-                overall = Byte.parseByte(result.getString("s_overall"));
-
-                // Get Product Name
-                Document document = Jsoup.connect(MainActivity.url).followRedirects(false).timeout(10000).get();
-                name = document.body().select("#productTitle").get(0).text();
-
-                itemresult = new itemResult(name,rating,overall,refLink, requested.ASIN, requested.amazonType);
+                itemresult.setRating(Double.parseDouble(result.getString("rating")));
+                itemresult.setLink(result.getString("href"));
+                itemresult.setOverall(Byte.parseByte(result.getString("s_overall")));
             }
         }catch (Exception e){
-            Log.e("ReviewCheck", e.getMessage());
+            Log.e("ReviewCheck", Objects.requireNonNull(e.getMessage()));
         }
         finally{
             if(br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    Log.e("ReviewCheck", e.getMessage());
+                    Log.e("ReviewCheck", Objects.requireNonNull(e.getMessage()));
                 }
             }
             if(huc != null) {
                 huc.disconnect();
             }
         }
+
+        // Get information from Amazon page
+        try{
+            // Get Product Name
+            Document document = Jsoup.connect(MainActivity.url).get();
+            itemresult.setName(document.body().select("#title").get(0).text());
+        } catch (Exception e){
+            Log.e("ReviewMeta", Objects.requireNonNull(e.getMessage()));
+        }
+
+
         return itemresult;
     }
 

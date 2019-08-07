@@ -13,8 +13,11 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadSettings();
 
-        //SetztDisplayaufPortraitmodus(Hochkant)
+        // Setting display mode to portrait
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         txb_url = findViewById(R.id.txb_url);
 
@@ -53,13 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.url_auto_entered, Toast.LENGTH_SHORT).show();
             }
         }
-        /*
-        ImageView imageView = findViewById(R.id.my_image_view);
-        Glide.with(getApplicationContext())
-                .load("https://images-na.ssl-images-amazon.com/images/I/41BLUS6FI4L._AC_SY200_.jpg")
-                .override(300,300)
-                .into(imageView);
-        */
     }
 
     @Override
@@ -71,16 +67,19 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.removeAllViews();
 
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
+                LinearLayout verticalLayout = new LinearLayout(this);
+                verticalLayout.setOrientation(LinearLayout.VERTICAL);
+
                 Button button = new Button(this);
                 button.setBackgroundColor(Color.TRANSPARENT);
                 button.setId(i);
                 // Set Text
                 itemResult result = searchHistory.get(i);
 
-                String name = result.name;
-                if(result.name.length() > 30)
-                    name = result.name.substring(0,30) + "...";
-                String text = name + "\n" + "Rating: " + result.getRating() + "\tAmazon Typ: " + result.amazonType;
+                String name = result.getName();
+                if(result.getName().length() > 30)
+                    name = result.getName().substring(0,30) + "...";
+                String text = name + "\n" + "Rating: " + result.getRating() + "\tAmazon Typ: " + result .getAmazonType();
                 button.setText(text);
 
                 // OnClickListener
@@ -92,22 +91,30 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                linearLayout.addView(button);
+                ImageView imageView = new ImageView(this);
+                Glide.with(getApplicationContext())
+                        .load(result.getPictureURL())
+                        .override(300,300)
+                        .into(imageView);
+
+                verticalLayout.addView(imageView);
+                verticalLayout.addView(button);
+                linearLayout.addView(verticalLayout);
             }
         }
     }
 
     public void CheckItem(View v){
         try {
-            // Text aus EditText Box holen
+            // Grab text from textbox
             String textboxText = txb_url.getText().toString();
 
-            // Überprüfen ob etwas drinne stand.
+            // Check if something is in it
             if (textboxText.length() > 0) {
                 String[] splittedText = textboxText.split(" ");
                 url = splittedText[splittedText.length - 1];
 
-                // Überprüfen ob eingegebener String eine URL ist
+                // Check if string from box is a URL
                 if(URLUtil.isValidUrl(MainActivity.url)) {
                     // Filter ASIN from URL with RegEx
                     Pattern pattern = Pattern.compile(".*/([a-zA-Z0-9]{10})(?:[/?]|$).*");
@@ -142,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         saveSettings();
     }
 
-
     // Save/Load
     public void saveSettings(){
         SharedPreferences preferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
@@ -156,13 +162,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadSettings(){
-        SharedPreferences prfs = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = prfs.getString("historyList", "");
+        String json = sharedPreferences.getString("historyList", "");
         if(!json.equals("")) {
-            Type type = new TypeToken<List<itemResult>>() {
-            }.getType();
+            Type type = new TypeToken<List<itemResult>>() {}.getType();
             MainActivity.searchHistory = gson.fromJson(json, type);
         }
+    }
+
+    public void clearHistory(View v){
+        searchHistory.clear();
+        LinearLayout horizontalLayout = findViewById(R.id.lst_searchHistory);
+        horizontalLayout.removeAllViews();
+        Toast.makeText(getApplicationContext(), R.string.history_cleared, Toast.LENGTH_SHORT).show();
     }
 }

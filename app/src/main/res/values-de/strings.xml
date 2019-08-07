@@ -1,6 +1,5 @@
 <resources>
     <string name="url">Amazon-Link</string>
-    <string name="ok">OK</string>
     <string name="search_history">Abfrageverlauf</string>
     <string name="no_URL_Entered">Kein Link vorhanden</string>
     <string name="no_internet_connection">Keine Internetverbindung</string>

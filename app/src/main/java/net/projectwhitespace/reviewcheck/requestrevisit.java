@@ -20,18 +20,18 @@ public class requestrevisit extends AppCompatActivity {
 
         result = MainActivity.searchHistory.get(MainActivity.revisitId);
 
-        // Standardeinstellungen bei WebView treffen
+        // Setting default things for webview
         setUpWebView();
 
         String baseURL = "https://reviewmeta.com/";
-        webview.loadUrl(baseURL + '/' + result.amazonType + '/' + result.ASIN);
+        webview.loadUrl(baseURL + '/' + result.getAmazonType() + '/' + result.getASIN());
     }
 
     public void setUpWebView(){
-        webview = (WebView)findViewById(R.id.browser);
-        // Enable Javascript
+        webview = findViewById(R.id.browser);
         WebSettings webSettings = webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        // Enable Javascript
+        webSettings.setJavaScriptEnabled(false);
 
         webview.setWebViewClient(new WebViewClient());
         CookieManager.getInstance().setAcceptCookie(true);
