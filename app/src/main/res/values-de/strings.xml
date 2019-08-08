@@ -1,5 +1,6 @@
 <resources>
     <string name="url">Amazon-Link</string>
+    <string name="ok">OK</string>
     <string name="search_history">Abfrageverlauf</string>
     <string name="no_URL_Entered">Kein Link vorhanden</string>
     <string name="no_internet_connection">Keine Internetverbindung</string>
@@ -9,4 +10,19 @@
     <string name="cnd_SearchHistory">Suchverlauf</string>
     <string name="clear_history">Verlauf löschen</string>
     <string name="history_cleared">Verlauf wurde gelöscht</string>
+    <string name="FAQ">F.A.Q</string>
+    <string name="information">Informationen</string>
+    <string name="faq_internet_permission"><b>Warum benötigt \"ReviewCheck\" Berechtigungen fürs Internet?</b>\nInternetberechtigungen werden benötigt um die angepassten Rezensionen und detailierte Informationen auf dein Gerät zu bringen</string>
+    <string name="faq_no_full_information"><b>Warum sind manchmal keine Informationen verfügbar?</b>\nDas kann daran liegen, dass das Produkt neu oder noch nicht analysiert wurde. Dies sollte jedoch bald gemacht werden.</string>
+    <string name="Privacy">Datenschutz</string>
+    <string name="privacy_text">ReviewCheck selbst speichert keine personenbezogene Daten auf einem anderen Geräte als diesem.\nDie Daten, welche auf diesem Gerät gespeichert werden, ist nur dein Suchverlauf, welchen du löschen kannst.\nWir nutzen jedoch die ReviewMeta-API von welchem wir die angepassten Rezensionen bekommen. Diese Anfrage beinhält nur die ASIN des Produktes.\nDennoch empfehlen wir die Privacy Policy von ReviewMeta anzuschauen.\nhttps://reviewmeta.com/blog/privacy/</string>
+    <string name="Important_header">Wichtig</string>
+    <string name="important_text"><b>ReviewMeta</b> wird NICHT von <b>ReviewMeta</b> entwickelt, finanziert oder gesponsort.\nReviewCheck nutzt nur die öffentliche ReviewMeta API.\n\nReviewCheck erhält keine Zahlungen von Herstellern, Händlern oder Platformen, welche in dieser App gezeigt werden.\n\nEs gibt kein Recht, dass diese App informationen richtig anzeigt oder funktioniert.</string>
+    <string name="Copyright_header">© Urheberrecht</string>
+    <string name="copyright_text"><b>ReviewMeta</b>ist eigentum von<b>Review Honesty Inc.</b>. Logos und gezeigte informationen gehören den rechtlichen Eigentümern.
+\nhttps://reviewmeta.com/\n\n
+<b>ReviewCheck</b>wird von <b>Project Whitespace</b> entwickelt und ist deren Eigentum. Die Logos und der Code gehört Project Whitespace und wurde unter der \"Mozilla Public License 2.0\" als Open-Source veröffentlicht. \nDer Sourcecode kann in der Github Repository eingesehen werden.
+\n\nhttps://github.com/MrMinemeet/ReviewCheck
+\nhttps://www.ProjectWhitespace.net\n
+</string>
 </resources>
