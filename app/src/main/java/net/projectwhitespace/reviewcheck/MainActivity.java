@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 itemResult result = searchHistory.get(i);
 
                 String name = result.getName();
-                if(result.getName().length() > 30)
-                    name = result.getName().substring(0,30) + "...";
+                if(result.getName().length() > 50)
+                    name = result.getName().substring(0,50) + "...";
                 String text = name + "\n" + "Rating: " + result.getRating() + "\tAmazon Typ: " + result .getAmazonType();
                 button.setText(text);
 
