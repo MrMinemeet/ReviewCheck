@@ -1,6 +1,5 @@
 package net.projectwhitespace.reviewcheck;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Objects;
 
 public class requested extends AppCompatActivity {
-
+    public static itemResult result = new itemResult();
     WebView webview;
     public static String ASIN;
     public static String amazonType = "";
@@ -38,11 +38,15 @@ public class requested extends AppCompatActivity {
 
         String baseURL = "https://reviewmeta.com/";
         amazonType = getAmazonType();
-        webview.loadUrl(baseURL + '/' + amazonType + '/' + ASIN);
-        String requestApiURL = baseURL + "api/" + amazonType + '/' + ASIN;
-        new getApiDataAsync().execute(requestApiURL);
+        result.setAmazonType(amazonType);
+        String reviewMetaURL = baseURL + '/' + amazonType + '/' + ASIN;
+        String reviewMetaAPI = baseURL + "api/" + amazonType + '/' + ASIN;;
+        webview.loadUrl(reviewMetaURL);
+        new getApiDataAsync().execute(reviewMetaAPI);
+        new getProductInformationAsync().execute(reviewMetaURL);
     }
 
+    @NotNull
     private String getAmazonType(){
         try {
             URI uri = new URI(MainActivity.url);
@@ -91,19 +95,43 @@ public class requested extends AppCompatActivity {
         webview.setWebViewClient(new WebViewClient());
         CookieManager.getInstance().setAcceptCookie(true);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(result != null)
+            MainActivity.searchHistory.add(result);
+    }
+}
+
+// Function for grabbing and filtering product name and other specific information
+class getProductInformationAsync extends AsyncTask<String, Void, Void> {
+    @Override
+    protected Void doInBackground(String... strings) {
+        String url = strings[strings.length - 1];
+
+        try{
+            Document doc = Jsoup.connect(url).followRedirects(false).timeout(10000).get();
+            String s = doc.body().select("#product_name").get(0).text();
+            String[] splitted = s.split("More");
+            requested.result.setName(splitted[0]);
+        }catch(Exception e){
+            Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+        }
+        return null;
+    }
 }
 
 // Function for requesting the data from API asynchronously
 // AsyncTask<Parameters, Progress Value Type, Return Value Type>
-class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
+class getApiDataAsync extends AsyncTask<String, Void, Void> {
 
     @Override
-    protected itemResult doInBackground(String... strings) {
+    protected Void doInBackground(String... strings) {
         String link = strings[strings.length - 1];
 
         HttpURLConnection huc = null;
         BufferedReader br = null;
-        itemResult itemresult = new itemResult();
 
         // Get Information from ReviewMeta API
         try{
@@ -117,9 +145,9 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
                 String response = br.readLine();
                 JSONObject result = new JSONObject(response);
                 // Get ReviewMeta API information
-                itemresult.setRating(Double.parseDouble(result.getString("rating")));
-                itemresult.setLink(result.getString("href"));
-                itemresult.setOverall(Byte.parseByte(result.getString("s_overall")));
+                requested.result.setRating(Double.parseDouble(result.getString("rating")));
+                requested.result.setLink(result.getString("href"));
+                requested.result.setOverall(Byte.parseByte(result.getString("s_overall")));
             }
         }catch (Exception e){
             Log.e("ReviewCheck", Objects.requireNonNull(e.getMessage()));
@@ -136,22 +164,6 @@ class getApiDataAsync extends AsyncTask<String, Integer,itemResult>{
                 huc.disconnect();
             }
         }
-
-        // Get information from Amazon page
-        try{
-            // Get Product Name
-            Document document = Jsoup.connect(MainActivity.url).get();
-            itemresult.setName(document.body().select("#title").get(0).text());
-        } catch (Exception e){
-            Log.e("ReviewMeta", Objects.requireNonNull(e.getMessage()));
-        }
-
-
-        return itemresult;
-    }
-
-    // Will run in UI Thread when finished
-    protected void onPostExecute(itemResult result){
-        MainActivity.searchHistory.add(result);
+        return null;
     }
 }
