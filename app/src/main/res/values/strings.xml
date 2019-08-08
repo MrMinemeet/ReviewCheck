@@ -14,7 +14,7 @@
     <string name="FAQ">F.A.Q</string>
     <string name="information">Information</string>
     <string name="faq_internet_permission"><b>Why does \"ReviewCheck\" need permissions for internet?</b>\nInternet permissions are required to get the adjusted reviews and the detailed information to your phone.</string>
-    <string name="faq_no_full_information"><b>Why is there no information available for certain products?</b>\nThat happens when a product is new or hasn\'t been analyzed yet. This should be done shortly when havin the full review open.</string>
+    <string name="faq_no_full_information"><b>Why is there no information available for certain products?</b>\nThat happens when a product is new or hasn\'t been analyzed yet. This should be done shortly when having the full review open.</string>
     <string name="Privacy">Privacy</string>
     <string name="privacy_text">ReviewCheck itself doesn\'t store personal any data on any other device than your current device.\nThe data that\'s stored on this device is only your Search history, which you can delete if you wish so.\nWe also use the ReviewMeta API where we get the adjusted reviews. In part of the request we only send the product\'s ASIN which is only for the specific product.\nAnyway we recommend to check out the privacy policy which ReviewMeta.com has.\nhttps://reviewmeta.com/blog/privacy/</string>
     <string name="Important_header">Important</string>
