@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/faq_internet_permission"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/faq_no_full_information"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:text="@string/important_text"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:text="@string/privacy_text"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -106,13 +106,28 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/copyright_text"
+                android:id="@+id/copyright_reviewCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="@string/copyright_text"
-                android:textSize="18sp" />
+                android:text="@string/copyright_reviewCheck"
+                android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/copyright_reviewMeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="@string/copyright_reviewMeta"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/rmlogo"
+                android:contentDescription="ReviewMeta Logo"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
