@@ -1,6 +1,5 @@
 package net.projectwhitespace.reviewcheck;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;

@@ -9,6 +9,9 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
 
+        // Check if App got Link via "share" feature
         if(Intent.ACTION_SEND.equals(action) && type != null){
             if(type.equals("text/plain")) {
                 Log.d("ReviewMeta", "Recieved Intent was: " + intent.getStringExtra(Intent.EXTRA_TEXT));
@@ -55,6 +60,25 @@ public class MainActivity extends AppCompatActivity {
                 txb_url.setText(url);
                 Toast.makeText(getApplicationContext(), R.string.url_auto_entered, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.information:
+                // Start informaiton activity
+                Intent informationIntent = new Intent(this, information.class);
+                startActivity(informationIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

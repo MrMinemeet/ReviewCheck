@@ -10,4 +10,9 @@
     <string name="clear_history">Verlauf löschen</string>
     <string name="history_cleared">Verlauf wurde gelöscht</string>
     <string name="ok">OK</string>
+    <string name="FAQ">F.A.Q</string>
+    <string name="information">Information</string>
+    <string name="Privacy">Datenschutz</string>
+    <string name="Important_header">Wichtig</string>
+    <string name="Copyright_header">Urheberrecht</string>
 </resources>

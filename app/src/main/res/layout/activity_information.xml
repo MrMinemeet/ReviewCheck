@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".information">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/FAQ_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/FAQ"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/faq_internet_permissions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_internet_permission"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/faq_no_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_no_full_information"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/Important_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Important_header"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/important_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="@string/important_text"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/Privacy_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Privacy"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/privacy_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="@string/privacy_text"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/Copyright_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Copyright_header"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/copyright_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="@string/copyright_text"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
