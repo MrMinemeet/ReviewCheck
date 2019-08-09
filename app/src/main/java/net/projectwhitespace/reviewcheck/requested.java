@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -109,12 +110,33 @@ class getProductInformationAsync extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         String url = strings[strings.length - 1];
+        Document doc = null;
 
+        // Download html-website with Jsoup
+        try {
+            doc = Jsoup.connect(url).followRedirects(false).timeout(10000).get();
+        } catch (IOException e) {
+            Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+        }
+
+        // Fetch productname from html code
         try{
-            Document doc = Jsoup.connect(url).followRedirects(false).timeout(10000).get();
-            String s = doc.body().select("#product_name").get(0).text();
-            String[] splitted = s.split("More");
-            requested.result.setName(splitted[0]);
+            if(doc != null) {
+                String s = doc.body().select("#product_name").get(0).text();
+                String[] splitted = s.split("More");
+                requested.result.setName(splitted[0]);
+            }
+        }catch(Exception e){
+            Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+        }
+
+        // Fetch product image url from html code
+        try{
+            if(doc != null) {
+                Element image = doc.body().select("#main_product_image").get(0);
+                String imageUrl = image.absUrl("src");
+                requested.result.setPictureURL(imageUrl);
+            }
         }catch(Exception e){
             Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
         }
