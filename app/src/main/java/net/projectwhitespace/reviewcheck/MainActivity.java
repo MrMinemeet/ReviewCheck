@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -93,15 +96,17 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.removeAllViews();
 
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
-                LinearLayout verticalLayout = new LinearLayout(this);
-                verticalLayout.setOrientation(LinearLayout.VERTICAL);
+                itemResult result = searchHistory.get(i);
 
+                // generate linear layout for picture and short product info
+                LinearLayout horizontalLayout = new LinearLayout(this);
+                horizontalLayout.setGravity(Gravity.CENTER);
+                horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                // Generate button with product info
                 Button button = new Button(this);
                 button.setBackgroundColor(Color.TRANSPARENT);
                 button.setId(i);
-                // Set Text
-                itemResult result = searchHistory.get(i);
-
                 String name = result.getName();
                 if(result.getName().length() > 50)
                     name = result.getName().substring(0,50) + "...";
@@ -117,15 +122,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                // Load product picture
                 ImageView imageView = new ImageView(this);
                 Glide.with(getApplicationContext())
                         .load(result.getPictureURL())
                         .override(300,300)
                         .into(imageView);
 
-                verticalLayout.addView(imageView);
-                verticalLayout.addView(button);
-                linearLayout.addView(verticalLayout);
+                // Add everything to View
+                horizontalLayout.addView(imageView);
+                horizontalLayout.addView(button);
+                linearLayout.addView(horizontalLayout);
             }
         }
     }
