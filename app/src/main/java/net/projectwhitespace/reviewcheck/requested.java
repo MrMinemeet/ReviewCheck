@@ -1,6 +1,11 @@
 package net.projectwhitespace.reviewcheck;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +14,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +27,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -135,7 +146,12 @@ class getProductInformationAsync extends AsyncTask<String, Void, Void> {
             if(doc != null) {
                 Element image = doc.body().select("#main_product_image").get(0);
                 String imageUrl = image.absUrl("src");
-                requested.result.setPictureURL(imageUrl);
+
+                InputStream input = new URL(imageUrl).openStream();
+                Bitmap productImage = BitmapFactory.decodeStream(input);
+
+                requested.result.setPictureUrl(imageUrl);
+                requested.result.setPicture(productImage);
             }
         }catch(Exception e){
             Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));

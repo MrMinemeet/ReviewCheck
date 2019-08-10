@@ -1,5 +1,7 @@
 package net.projectwhitespace.reviewcheck;
 
+import android.graphics.Bitmap;
+
 public class itemResult {
     private String name;
     private double rating;
@@ -7,17 +9,17 @@ public class itemResult {
     private Byte overall;
     private String ASIN;
     private String amazonType;
-    private String pictureURL;
+    private String pictureUrl;
+    private Bitmap picture;
 
 
-    public itemResult(String name, double rating, Byte overall, String link, String ASIN, String amazonType, String pictureURL){
+    public itemResult(String name, double rating, Byte overall, String link, String ASIN, String amazonType){
         this.name = name;
         this.rating = rating;
         this.overall = overall;
         this.link = link;
         this.ASIN = ASIN;
         this.amazonType = amazonType;
-        this.pictureURL = pictureURL;
     }
 
     public itemResult() { }
@@ -70,11 +72,19 @@ public class itemResult {
         this.amazonType = amazonType;
     }
 
-    public String getPictureURL() {
-        return pictureURL;
+    public Bitmap getPicture() {
+        return picture;
     }
 
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
+    public void setPicture(Bitmap pictureBmp) {
+        this.picture = pictureBmp;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl){
+        this.pictureUrl = pictureUrl;
     }
 }

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,9 +27,16 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.FutureTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -98,6 +107,27 @@ public class MainActivity extends AppCompatActivity {
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
                 itemResult result = searchHistory.get(i);
 
+
+                // Load picture from URL if bitmap is empty
+                if(result.getPicture() == null && result.getPictureUrl() != null){
+                    try {
+                        FutureTarget<Bitmap> futureTarget =
+                                Glide.with(this)
+                                        .asBitmap()
+                                        .load(url)
+                                        .submit();
+
+                        Bitmap bitmap = futureTarget.get();
+
+                        if(bitmap != null)
+                            result.setPicture(bitmap);
+                        Glide.with(this).clear(futureTarget);
+
+                    }catch (Exception e){
+                        Log.e("ReviewMeta", String.valueOf(e.getStackTrace()));
+                    }
+                }
+
                 // generate linear layout for picture and short product info
                 LinearLayout horizontalLayout = new LinearLayout(this);
                 horizontalLayout.setGravity(Gravity.CENTER);
@@ -122,15 +152,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                // Load product picture
-                ImageView imageView = new ImageView(this);
-                Glide.with(getApplicationContext())
-                        .load(result.getPictureURL())
-                        .override(300,300)
-                        .into(imageView);
+                // Load product picture from result if parrent
+                if(result.getPicture() != null) {
+                    ImageView imageView = new ImageView(this);
+                    imageView.setImageBitmap(result.getPicture());
+                    horizontalLayout.addView(imageView);
+                }
 
                 // Add everything to View
-                horizontalLayout.addView(imageView);
                 horizontalLayout.addView(button);
                 linearLayout.addView(horizontalLayout);
             }
@@ -184,6 +213,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Save/Load
     public void saveSettings(){
+        // Remove all product pictures (causes error on loading)
+        for(itemResult result : searchHistory){
+            result.setPicture(null);
+        }
         SharedPreferences preferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
@@ -193,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("historyList", json);
         editor.apply();
     }
+
 
     public void loadSettings(){
         SharedPreferences sharedPreferences = getSharedPreferences("ReviewCheckData", Context.MODE_PRIVATE);
