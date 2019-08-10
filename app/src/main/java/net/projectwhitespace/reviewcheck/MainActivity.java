@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if( searchHistory.size() > 0) {
             LinearLayout linearLayout = findViewById(R.id.lst_searchHistory);
-
             linearLayout.removeAllViews();
 
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
