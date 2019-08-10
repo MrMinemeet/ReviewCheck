@@ -22,4 +22,5 @@
     <string name="Copyright_header">© Copyright</string>
     <string name="copyright_reviewCheck"><b>ReviewCheck</b> is developed and poperty  of <b>Project Whitespace</b>. The logo and code is property by ProjectWhitespace but made open-source under \"Mozilla Public License 2.0\".\nThe source code can be seen on this GitHub Repository.\nhttps://github.com/MrMinemeet/ReviewCheck\nhttps://www.ProjectWhitespace.net\n</string>
     <string name="copyright_reviewMeta"><b>ReviewMeta</b> is property of <b>Review Honesty Inc.</b>. The Logo and the information shown corrisponds to the legal owner. https://reviewmeta.com/</string>
+    <string name="error_loading">Error loading requested product</string>
 </resources>

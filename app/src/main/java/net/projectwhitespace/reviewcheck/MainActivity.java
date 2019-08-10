@@ -44,7 +44,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    public static int revisitId;
     public static String url = "";
     private EditText txb_url;
     public static List<itemResult> searchHistory = new ArrayList<>();
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.removeAllViews();
 
             for (int i = searchHistory.size() - 1; i >= 0; i--) {
-                itemResult result = searchHistory.get(i);
+                final itemResult result = searchHistory.get(i);
 
 
                 // Load picture from URL if bitmap is empty
@@ -146,8 +145,11 @@ public class MainActivity extends AppCompatActivity {
                 // OnClickListener
                 button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        MainActivity.revisitId = view.getId();
+                        final String ASIN = result.getASIN();
+                        final String AmazonType = result.getAmazonType();
                         Intent myIntent = new Intent(MainActivity.this, requestrevisit.class);
+                        myIntent.putExtra("ASIN", ASIN);
+                        myIntent.putExtra("Type", AmazonType);
                         MainActivity.this.startActivity(myIntent);
                     }
                 });

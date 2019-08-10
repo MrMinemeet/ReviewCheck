@@ -51,6 +51,7 @@ public class requested extends AppCompatActivity {
         String baseURL = "https://reviewmeta.com/";
         amazonType = getAmazonType();
         result.setAmazonType(amazonType);
+        result.setASIN(ASIN);
         String reviewMetaURL = baseURL + '/' + amazonType + '/' + ASIN;
         String reviewMetaAPI = baseURL + "api/" + amazonType + '/' + ASIN;;
         webview.loadUrl(reviewMetaURL);
