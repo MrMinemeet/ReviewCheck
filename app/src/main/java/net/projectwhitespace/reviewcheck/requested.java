@@ -5,21 +5,17 @@ import androidx.fragment.app.Fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
+import android.widget.ProgressBar;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,26 +33,39 @@ import java.util.Objects;
 
 public class requested extends AppCompatActivity {
     public static itemResult result = new itemResult();
-    WebView webview;
+    public static WebView webview;
+    public static ProgressBar progressBar;
     public static String ASIN;
     public static String amazonType = "";
+
+
+    public static boolean gotProductInformation = false;
+    public static boolean gotApiData = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requested);
-
         // Setting default things for webview
         setUpWebView();
 
+        progressBar = findViewById(R.id.pgb_loading);
+
+        // Create API and Web URL
         String baseURL = "https://reviewmeta.com/";
         amazonType = getAmazonType();
         result.setAmazonType(amazonType);
         result.setASIN(ASIN);
         String reviewMetaURL = baseURL + '/' + amazonType + '/' + ASIN;
         String reviewMetaAPI = baseURL + "api/" + amazonType + '/' + ASIN;;
+
+        // Load URL into webview
         webview.loadUrl(reviewMetaURL);
+
+        // Call threads to get data in other thread
         new getApiDataAsync().execute(reviewMetaAPI);
         new getProductInformationAsync().execute(reviewMetaURL);
+        new CheckForFinishedGathering().execute();
     }
 
     @NotNull
@@ -117,6 +126,30 @@ public class requested extends AppCompatActivity {
     }
 }
 
+class CheckForFinishedGathering extends AsyncTask<String, Void, Void>{
+
+    @Override
+    protected Void doInBackground(String... strings) {
+        while(!requested.gotProductInformation && !requested.gotApiData){
+            // App is still gathering data
+            // wait for 50ms
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        requested.progressBar.setVisibility(View.GONE);
+        requested.webview.setVisibility(View.VISIBLE);
+    }
+}
+
 // Function for grabbing and filtering product name and other specific information
 class getProductInformationAsync extends AsyncTask<String, Void, Void> {
     @Override
@@ -127,8 +160,10 @@ class getProductInformationAsync extends AsyncTask<String, Void, Void> {
         // Download html-website with Jsoup
         try {
             doc = Jsoup.connect(url).followRedirects(false).timeout(10000).get();
+
         } catch (IOException e) {
             Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+            return null;
         }
 
         // Fetch productname from html code
@@ -140,6 +175,7 @@ class getProductInformationAsync extends AsyncTask<String, Void, Void> {
             }
         }catch(Exception e){
             Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+            return null;
         }
 
         // Fetch product image url from html code
@@ -156,8 +192,14 @@ class getProductInformationAsync extends AsyncTask<String, Void, Void> {
             }
         }catch(Exception e){
             Log.e("ReviewCheck", String.valueOf(e.getStackTrace()));
+            return null;
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        requested.gotProductInformation = true;
     }
 }
 
@@ -204,5 +246,10 @@ class getApiDataAsync extends AsyncTask<String, Void, Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        requested.gotApiData = true;
     }
 }
